@@ -20,6 +20,15 @@ Biblioteca de Microsoft para automatizar navegadores (Chromium, Firefox y WebKit
 - **Selectores estables:** por rol y por texto (`getByRole`, `getByText`), no XPath ni CSS generados.
 - **Datos fuera del test:** el título buscado está en `utils/datos.ts`.
 
+## Cómo funciona el test
+
+1. Abre el catálogo de la biblioteca (https://biblioteca.um.edu.ar, sistema **Koha**).
+2. Escribe "UML y patrones" en la caja de búsqueda y presiona Enter.
+3. A veces el catálogo responde **"Verificación fallida"** y muestra el formulario de búsqueda avanzada. En ese caso el test sigue igual que lo haría un usuario: completa "UML" y "patrones" en los campos y presiona **Buscar**.
+4. Verifica (`expect(...).toBeVisible()`) que el título "UML y patrones" aparezca en los resultados.
+
+Los selectores se obtuvieron grabando la navegación con `npx playwright codegen https://biblioteca.um.edu.ar`.
+
 ## Cómo ejecutarlo
 
     cd 2-playwright

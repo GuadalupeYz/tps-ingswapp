@@ -6,7 +6,7 @@ test('el libro "UML y Patrones" existe en la biblioteca de la universidad', asyn
   const biblioteca = new BibliotecaPage(page);
 
   await biblioteca.goto();
-  await biblioteca.buscar(libroBuscado.busqueda);
+  await biblioteca.buscarLibro(libroBuscado.busqueda, libroBuscado.terminosAvanzada);
 
   await expect(biblioteca.resultado(libroBuscado.tituloEsperado)).toBeVisible();
 });
