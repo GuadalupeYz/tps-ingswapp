@@ -1,0 +1,17 @@
+{
+  "name": "tp2-playwright-biblioteca",
+  "version": "1.0.0",
+  "description": "Test E2E: buscar el libro UML y Patrones en la biblioteca de la Universidad de Mendoza",
+  "private": true,
+  "scripts": {
+    "test": "playwright test",
+    "test:ui": "playwright test --ui",
+    "test:headed": "playwright test --headed",
+    "report": "playwright show-report",
+    "codegen": "playwright codegen"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.63.0",
+    "@types/node": "^22.0.0"
+  }
+}
