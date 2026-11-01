@@ -27,8 +27,12 @@ export class BibliotecaPage {
     await this.page.waitForLoadState();
   }
 
-  esCaptcha(): boolean {
-    return this.page.url().includes('verify-captcha');
+  /** Espera a que la búsqueda termine en resultados o en la página de CAPTCHA. */
+  async esperarRespuesta(): Promise<'resultados' | 'captcha'> {
+    return Promise.race([
+      this.paginaDeResultados.first().waitFor().then(() => 'resultados' as const),
+      this.page.waitForURL(/verify-captcha/).then(() => 'captcha' as const),
+    ]);
   }
 
   /**

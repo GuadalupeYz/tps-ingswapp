@@ -12,12 +12,19 @@ test('el libro "UML y Patrones" existe en la biblioteca de la universidad', asyn
   await biblioteca.goto();
   await biblioteca.buscar(libroBuscado.busqueda);
 
-  if (biblioteca.esCaptcha()) {
+  if ((await biblioteca.esperarRespuesta()) === 'captcha') {
     test.info().annotations.push({
       type: 'captcha',
-      description: 'El catálogo pidió verificación humana; se resolvió manualmente.',
+      description: 'El catálogo pidió verificación humana (/verify-captcha).',
     });
-    await biblioteca.esperarResolucionManualDelCaptcha(ESPERA_CAPTCHA_MS);
+    try {
+      await biblioteca.esperarResolucionManualDelCaptcha(ESPERA_CAPTCHA_MS);
+    } catch {
+      throw new Error(
+        'El catálogo bloqueó la búsqueda con su CAPTCHA anti-bots (/verify-captcha) ' +
+          'y no se resolvió manualmente. El test no intenta saltear esta protección.',
+      );
+    }
   }
 
   await expect(biblioteca.resultado(libroBuscado.tituloEsperado)).toBeVisible();
