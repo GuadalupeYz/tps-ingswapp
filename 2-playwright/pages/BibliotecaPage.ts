@@ -42,15 +42,34 @@ export class BibliotecaPage {
   }
 
   /**
-   * A veces la búsqueda simple responde "Verificación fallida" y muestra
-   * el formulario de búsqueda avanzada. En ese caso se sigue por ahí,
-   * igual que haría un usuario.
+   * Busca el libro reaccionando a lo que muestre el catálogo, como haría un usuario:
+   * - Resultados o ficha del libro: listo.
+   * - Formulario de búsqueda avanzada: completa los términos y presiona Buscar.
+   * - "Verificación fallida" (sin formulario): vuelve a la página anterior.
+   * - Caja de búsqueda simple: vuelve a buscar.
    */
-  async buscarLibro(texto: string, terminosAvanzada: string[]) {
+  async buscarLibro(texto: string, terminosAvanzada: string[], intentos = 4) {
     await this.buscar(texto);
-    await this.mensajeVerificacion.or(this.paginaDeResultados).first().waitFor();
-    if (await this.mensajeVerificacion.isVisible()) {
-      await this.buscarAvanzada(terminosAvanzada);
+    const formularioAvanzado = this.camposAvanzada.first();
+
+    for (let i = 0; i < intentos; i++) {
+      await this.paginaDeResultados
+        .or(this.mensajeVerificacion)
+        .or(formularioAvanzado)
+        .or(this.campoBusqueda)
+        .first()
+        .waitFor();
+
+      if (await this.paginaDeResultados.first().isVisible()) return;
+
+      if (await formularioAvanzado.isVisible()) {
+        await this.buscarAvanzada(terminosAvanzada);
+      } else if (await this.mensajeVerificacion.isVisible()) {
+        await this.page.goBack();
+      } else {
+        await this.buscar(texto);
+      }
+      await this.page.waitForLoadState();
     }
   }
 

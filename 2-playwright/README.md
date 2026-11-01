@@ -24,7 +24,7 @@ Biblioteca de Microsoft para automatizar navegadores (Chromium, Firefox y WebKit
 
 1. Abre el catálogo de la biblioteca (https://biblioteca.um.edu.ar, sistema **Koha**).
 2. Escribe "UML y patrones" en la caja de búsqueda y presiona Enter.
-3. A veces el catálogo responde **"Verificación fallida"** y muestra el formulario de búsqueda avanzada. En ese caso el test sigue igual que lo haría un usuario: completa "UML" y "patrones" en los campos y presiona **Buscar**.
+3. A veces el catálogo responde **"Verificación fallida"**. El test reacciona a lo que aparezca, como lo haría un usuario: si ve el formulario de búsqueda avanzada, completa "UML" y "patrones" y presiona **Buscar**; si solo ve el mensaje, vuelve a la página anterior; si ve la caja simple, busca de nuevo.
 4. Verifica (`expect(...).toBeVisible()`) que el título "UML y patrones" aparezca en los resultados.
 
 Los selectores se obtuvieron grabando la navegación con `npx playwright codegen https://biblioteca.um.edu.ar`.
