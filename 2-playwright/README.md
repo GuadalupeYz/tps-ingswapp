@@ -24,10 +24,13 @@ Biblioteca de Microsoft para automatizar navegadores (Chromium, Firefox y WebKit
 
 1. Abre el catálogo de la biblioteca (https://biblioteca.um.edu.ar, sistema **Koha**).
 2. Escribe "UML y patrones" en la caja de búsqueda y presiona Enter.
-3. A veces el catálogo responde **"Verificación fallida"**. El test reacciona a lo que aparezca, como lo haría un usuario: si ve el formulario de búsqueda avanzada, completa "UML" y "patrones" y presiona **Buscar**; si solo ve el mensaje, vuelve a la página anterior; si ve la caja simple, busca de nuevo.
-4. Verifica (`expect(...).toBeVisible()`) que el título "UML y patrones" aparezca en los resultados.
+3. Verifica (`expect(...).toBeVisible()`) que el título "UML y patrones" aparezca en los resultados.
 
 Los selectores se obtuvieron grabando la navegación con `npx playwright codegen https://biblioteca.um.edu.ar`.
+
+### CAPTCHA del catálogo
+
+El catálogo tiene un **CAPTCHA** (`/verify-captcha`) que frena a los navegadores automatizados. El test **no intenta saltearlo**: si aparece, espera hasta 2 minutos a que una persona lo resuelva en la ventana del navegador y después continúa con la verificación. Por eso conviene ejecutarlo con `npm run test:headed` o `npm run test:ui`. Sin ventana (`npm test`), si aparece el CAPTCHA, el test falla.
 
 ## Cómo ejecutarlo
 
