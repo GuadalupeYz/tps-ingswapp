@@ -1,8 +1,8 @@
 import { defineConfig, devices } from '@playwright/test';
 
-// URL del catálogo de la biblioteca. Se puede cambiar sin tocar el código:
-//   BIBLIOTECA_URL=https://... npx playwright test
-const BIBLIOTECA_URL = process.env.BIBLIOTECA_URL ?? 'https://REEMPLAZAR-URL-DEL-CATALOGO';
+// Catálogo de la biblioteca de la UM (sistema Koha).
+// Se puede cambiar sin tocar el código: BIBLIOTECA_URL=https://... npx playwright test
+const BIBLIOTECA_URL = process.env.BIBLIOTECA_URL ?? 'https://biblioteca.um.edu.ar';
 
 export default defineConfig({
   testDir: './tests',
