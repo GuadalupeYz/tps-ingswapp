@@ -1,0 +1,53 @@
+# Stack ELK para recibir los logs de la app JHipster.
+#   Elasticsearch: guarda e indexa los logs   -> http://localhost:9200
+#   Logstash:      recibe, filtra y enmascara -> TCP localhost:5000 (JSON)
+#   Kibana:        consultas y dashboards     -> http://localhost:5601
+#
+# Configurado para una computadora de desarrollo (poca memoria, sin seguridad).
+# En producción se activa la seguridad (usuarios y TLS) de Elastic.
+name: elk
+
+services:
+  elasticsearch:
+    image: elasticsearch:9.4.6
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+      # Sin esto, con el disco por encima del 85 % Elasticsearch deja los índices en solo lectura
+      - cluster.routing.allocation.disk.threshold_enabled=false
+    ports:
+      - "127.0.0.1:9200:9200"
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
+    healthcheck:
+      test: ["CMD-SHELL", "curl -s http://localhost:9200/_cluster/health | grep -qE '\"status\":\"(green|yellow)\"'"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+
+  logstash:
+    image: logstash:9.4.6
+    environment:
+      - LS_JAVA_OPTS=-Xms256m -Xmx256m
+      - xpack.monitoring.enabled=false
+    volumes:
+      - ./logstash/pipeline:/usr/share/logstash/pipeline:ro
+    ports:
+      - "127.0.0.1:5000:5000"
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+
+  kibana:
+    image: kibana:9.4.6
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    ports:
+      - "127.0.0.1:5601:5601"
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+
+volumes:
+  esdata: {}
