@@ -10,8 +10,8 @@ Comprobar que un usuario puede ingresar a un diario digital, acceder a la secci�
 
 | # | Paso | Qué comprueba el test |
 |---|------|-----------------------|
-| 1 | Abrir el navegador e ingresar a `https://www.infobae.com/` | Que la portada cargó: el título de la página contiene "Infobae" y el link **Tecno** del menú está visible |
-| 2 | Acceder a la sección Tecnología | Que la URL termina en `/tecno/`, que el título de la página habla de Tecnología y que hay noticias listadas |
+| 1 | Abrir el navegador e ingresar a `https://www.infobae.com/` | Que la portada cargó: el título de la página contiene "Infobae" y la navegación está disponible (el link **Tecno** o el botón **Menu**) |
+| 2 | Acceder a la sección Tecnología | Busca el link **Tecno** en la barra superior y, si no está, abre el **menú lateral** y lo toma de ahí. Comprueba que la URL termina en `/tecno/`, que el título de la página habla de Tecnología y que hay noticias listadas |
 | 3 | Seleccionar una noticia | Guarda el título que se ve en el listado y hace clic en la primera nota |
 | 4 | Comprobar que se abrió la noticia | Que la URL tiene la forma `/tecno/AAAA/MM/DD/...`, que el título (`h1`) está visible y que **coincide con el que se veía en el listado** |
 
@@ -38,7 +38,7 @@ Biblioteca de Microsoft para automatizar navegadores (Chromium, Firefox y WebKit
 - **Selectores estables:** por rol y texto (`getByRole('link', { name: 'Tecno' })`) y por la forma de la URL de las notas (`/tecno/AAAA/...`), no por clases CSS que cambian seguido.
 - **Datos fuera del test:** la sección y los patrones esperados están en `utils/datos.ts`.
 - **El test no depende de una noticia en particular:** las notas cambian todo el tiempo, así que toma la primera que haya y compara su título en el listado con el de la página de la nota.
-- **No depende de la edición:** Infobae redirige a una portada distinta según el país (Argentina, América, Estados Unidos). El test no verifica una URL exacta de portada, solo que sea Infobae.
+- **No depende de la edición ni del tamaño de pantalla:** Infobae muestra una portada distinta según el país (Argentina, América, Estados Unidos). En algunas, "Tecno" está en la barra superior y en otras (como la de Argentina) solo dentro del menú lateral. El Page Object hace lo mismo que haría una persona: si no ve el link, abre el menú. Además, el test no verifica una URL exacta de portada, solo que sea Infobae.
 
 ## Cómo ejecutarlo
 

@@ -13,7 +13,8 @@ test('un usuario llega desde la portada de Infobae hasta una noticia de Tecnolog
   await test.step('Ingresar a Infobae y comprobar que cargó la portada', async () => {
     await infobae.abrirPortada();
     await expect(page).toHaveTitle(datos.tituloPortada);
-    await expect(infobae.linkTecnologia).toBeVisible();
+    // La navegación está disponible: el link de Tecnología o el botón del menú
+    await expect(infobae.linkTecnologia.or(infobae.botonMenu).first()).toBeVisible();
   });
 
   await test.step('Acceder a la sección Tecnología', async () => {
