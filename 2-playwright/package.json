@@ -1,7 +1,7 @@
 {
   "name": "tp2-playwright-biblioteca",
   "version": "1.0.0",
-  "description": "Test E2E: buscar el libro UML y Patrones en la biblioteca de la Universidad de Mendoza",
+  "description": "Test E2E: llegar desde la portada de Infobae hasta una noticia de Tecnología",
   "private": true,
   "scripts": {
     "test": "playwright test",
